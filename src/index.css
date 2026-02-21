@@ -1,8 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "weather-icons/css/weather-icons.min.css";
-
 @custom-variant dark (&:is(.dark *));
 
 @theme {

@@ -1,14 +1,14 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
-import { App } from './App';
+import { WeatherScreen } from '~/screens/weather';
 
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <App />,
+		element: <WeatherScreen />,
 	},
 	{
 		path: '*',
-		element: <App />,
+		element: <WeatherScreen />,
 	},
 ]);
 

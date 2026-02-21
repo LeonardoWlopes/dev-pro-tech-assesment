@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { t } from '~/i18n/config';
 
 const envSchema = z.object({
-	API_BASE_URL: z.string().url(),
 	OPENWEATHER_API_KEY: z.string().min(1),
 	DEV: z.boolean().default(false),
 });
