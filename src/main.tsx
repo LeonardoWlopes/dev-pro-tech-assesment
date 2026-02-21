@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { QueryProvider } from './providers/query-provider';
 import { WeatherScreen } from '~/screens/weather';
+import { QueryProvider } from './providers/query-provider';
 import '~/i18n/config';
 
 const root = document.getElementById('root');

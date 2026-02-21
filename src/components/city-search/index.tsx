@@ -1,5 +1,6 @@
 import { ChevronsUpDown, Loader2, MapPin } from 'lucide-react';
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	Command,
 	CommandEmpty,
@@ -28,6 +29,8 @@ function CitySearch({
 }: CitySearchProps) {
 	const [open, setOpen] = useState(false);
 
+	const { t } = useTranslation('city_search');
+
 	const handleSelect = useCallback(
 		(city: City) => {
 			onSelectCity(city);
@@ -45,7 +48,7 @@ function CitySearch({
 					type="button"
 					role="combobox"
 					aria-expanded={open}
-					aria-label="Select city"
+					aria-label={t('aria_select_city')}
 					className={cn(
 						'flex h-9 w-full min-w-0 items-center justify-between gap-2 rounded-md border border-input bg-transparent px-3 py-1 text-left text-base shadow-xs outline-none transition-[color,box-shadow]',
 						'hover:bg-accent/50',
@@ -58,7 +61,7 @@ function CitySearch({
 							!displayValue && 'text-muted-foreground',
 						)}
 					>
-						{displayValue || 'Search by city'}
+						{displayValue || t('search_by_city')}
 					</span>
 
 					<ChevronsUpDown className="size-4 shrink-0 opacity-50" />
@@ -72,19 +75,19 @@ function CitySearch({
 				<Command shouldFilter={false}>
 					<CommandInput
 						autoFocus
-						placeholder="Search by city..."
+						placeholder={t('placeholder')}
 						value={search}
 						onValueChange={onSearchChange}
 					/>
 					{isSearching && (
 						<div className="flex items-center gap-2 px-2 py-1.5 text-muted-foreground text-sm">
 							<Loader2 className="size-4 animate-spin" />
-							Searching...
+							{t('searching')}
 						</div>
 					)}
 
 					<CommandList>
-						<CommandEmpty>No city found.</CommandEmpty>
+						<CommandEmpty>{t('no_city_found')}</CommandEmpty>
 
 						<CommandGroup>
 							{cities.map((city) => (

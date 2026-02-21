@@ -1,8 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import { aggregateForecastByDay } from '~/utils/forecast';
 import { WeatherIcon } from '../weather-icon';
 import type { FiveDayForecastProps } from './types';
 
 export function FiveDayForecast({ forecast }: FiveDayForecastProps) {
+	const { t } = useTranslation('forecast');
+
 	const days = aggregateForecastByDay(forecast);
 
 	if (days.length === 0) return null;
@@ -19,8 +22,8 @@ export function FiveDayForecast({ forecast }: FiveDayForecastProps) {
 					<WeatherIcon icon={day.icon} size="sm" />
 
 					<div className="flex gap-3 text-sm text-white">
-						<span title="Low">L {day.minTemp}°</span>
-						<span title="High">H {day.maxTemp}°</span>
+						<span title={t('low')}>L {day.minTemp}°</span>
+						<span title={t('high')}>H {day.maxTemp}°</span>
 					</div>
 				</div>
 			))}

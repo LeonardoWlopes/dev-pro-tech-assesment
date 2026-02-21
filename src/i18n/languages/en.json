@@ -1,8 +1,28 @@
 {
 	"app": {
-		"title": "App"
+		"title": "Weather Forecast"
+	},
+	"city_search": {
+		"aria_select_city": "Select city",
+		"no_city_found": "No city found.",
+		"placeholder": "Search by city...",
+		"search_by_city": "Search by city",
+		"searching": "Searching..."
+	},
+	"disclaimer": {
+		"text": "The information provided by this weather application is for general informational purposes only. All weather data, forecasts, and alerts are obtained from third-party sources and are provided \"as is\" without warranty of any kind, either express or implied. While we strive to provide accurate and timely information, we make no representations or warranties of any kind regarding the accuracy, completeness, reliability, or suitability of the weather data presented. Users are advised to consult official government sources and exercise their own judgment when making decisions based on weather conditions. The App and its developers are not liable for any direct, indirect, incidental, or consequential damages or losses arising from the use of or reliance on information provided by the App. By using this App, you agree to assume full responsibility for any decisions or actions taken based on its content."
 	},
 	"errors": {
 		"environment_variables": "Errors found in environment variables"
+	},
+	"forecast": {
+		"high": "High",
+		"low": "Low"
+	},
+	"weather": {
+		"empty_state": "Search for a city to see the weather forecast.",
+		"github": "GitHub",
+		"search": "Search",
+		"title": "Weather"
 	}
 }
