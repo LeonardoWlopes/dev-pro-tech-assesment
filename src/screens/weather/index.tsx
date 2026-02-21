@@ -1,4 +1,4 @@
-import { CloudSun } from 'lucide-react';
+import { CloudSun, Github } from 'lucide-react';
 import { CitySearch } from '~/components/city-search';
 import { CurrentWeather } from '~/components/current-weather';
 import { Disclaimer } from '~/components/disclaimer';
@@ -44,7 +44,18 @@ export function WeatherScreen() {
 				className="flex flex-1 flex-col gap-8 p-6 lg:p-8"
 				style={getWeatherGradient(currentWeather?.weather?.[0]?.main)}
 			>
-				<h2 className="font-bold text-2xl text-white">Weather</h2>
+				<div className="flex items-center justify-between">
+					<h2 className="font-bold text-2xl text-white">Weather</h2>
+					<a
+						href="https://github.com/LeonardoWlopes/dev-pro-tech-assesment"
+						target="_blank"
+						rel="noopener noreferrer"
+						className="flex items-center gap-2 rounded-md bg-white/20 px-3 py-2 text-white transition-colors hover:bg-white/30"
+					>
+						<Github className="size-5" />
+						<span className="font-medium text-sm">GitHub</span>
+					</a>
+				</div>
 
 				{isLoading ? (
 					<div className="flex flex-1 flex-col items-center justify-evenly gap-8">
