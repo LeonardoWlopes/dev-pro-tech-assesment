@@ -1,4 +1,3 @@
-import storybook from 'eslint-plugin-storybook'
 import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
@@ -9,14 +8,13 @@ import unusedImports from 'eslint-plugin-unused-imports'
 import eslintConfigPrettier from 'eslint-config-prettier'
 
 export default tseslint.config(
+	{ ignores: ['**/dist/**', '**/node_modules/**'] },
 	js.configs.recommended,
 	eslintConfigPrettier,
-	storybook.configs['flat/recommended'],
 	...tseslint.configs.recommended,
 
 	{
 		files: ['**/*.{ts,tsx,js}'],
-		ignores: ['**/dist/**', '**/node_modules/**'],
 		extends: [prettier],
 		languageOptions: {
 			ecmaVersion: 2020,

@@ -24,7 +24,7 @@
 	"i18n-ally.localesPaths": [
 		"**/languages/**"
 	],
-	"i18n-ally.sourceLanguage": "pt-br",
+	"i18n-ally.sourceLanguage": "en",
 	"tailwindCSS.experimental.classRegex": [
 		[
 			"cva\\(([^)]*)\\)",

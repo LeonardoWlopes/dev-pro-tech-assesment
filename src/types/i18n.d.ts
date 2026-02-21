@@ -1,9 +1,9 @@
 import 'i18next'
-import type ptBR from '~/i18n/languages/pt-BR.json'
+import type en from '~/i18n/languages/en.json'
 
 declare module 'i18next' {
 	interface CustomTypeOptions {
 		defaultNS: 'translation'
-		resources: typeof ptBR
+		resources: typeof en
 	}
 }

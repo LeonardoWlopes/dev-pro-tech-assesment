@@ -1,0 +1,8 @@
+{
+	"app": {
+		"title": "App"
+	},
+	"errors": {
+		"environment_variables": "Errors found in environment variables"
+	}
+}

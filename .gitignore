@@ -22,12 +22,3 @@ coverage
 *.njsproj
 *.sln
 *.sw?
-
-# Cypress && Allure
-/cypress/reports
-/cypress/screenshots
-!/cypress/screenshots/.gitkeep
-/cypress/videos
-!/cypress/videos/.gitkeep
-/allure-report
-/allure-results
