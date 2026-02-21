@@ -1,9 +1,9 @@
 import { CloudSun } from 'lucide-react';
-import { Fragment } from 'react';
 import { CitySearch } from '~/components/city-search';
 import { CurrentWeather } from '~/components/current-weather';
 import { Disclaimer } from '~/components/disclaimer';
 import { FiveDayForecast } from '~/components/five-day-forecast';
+import { Skeleton } from '~/components/ui/skeleton';
 import { DisclaimerVariant } from '~/enums/weather';
 import { useWeatherScreenContainer } from './container';
 
@@ -14,7 +14,9 @@ export function WeatherScreen() {
 		cities,
 		selectedCity,
 		onSelectCity,
-		weatherData,
+		currentWeather,
+		isLoading,
+		forecastWeather,
 	} = useWeatherScreenContainer();
 
 	return (
@@ -38,13 +40,32 @@ export function WeatherScreen() {
 			<main className="flex flex-1 flex-col gap-8 bg-linear-to-b from-sky-400 to-blue-600 p-6 lg:p-8">
 				<h2 className="font-bold text-2xl text-white">Weather</h2>
 
-				{weatherData ? (
-					<Fragment>
-						<CurrentWeather weather={weatherData.current} />
-						{weatherData.forecast.length > 0 && (
-							<FiveDayForecast days={weatherData.forecast} />
+				{isLoading ? (
+					<div className="flex flex-1 flex-col items-center justify-evenly gap-8">
+						<div className="flex flex-col items-center gap-2 text-center">
+							<Skeleton className="size-24 rounded-full bg-white/20" />
+							<Skeleton className="h-8 w-40 bg-white/20" />
+							<Skeleton className="h-16 w-24 bg-white/20" />
+							<Skeleton className="h-5 w-32 bg-white/20" />
+						</div>
+
+						<div className="flex flex-wrap justify-center gap-4">
+							{Array.from({ length: 5 }).map((_, index) => (
+								<Skeleton
+									key={`day-${index + 1}`}
+									className="h-[120px] min-w-[110px] rounded-xl bg-white/20"
+								/>
+							))}
+						</div>
+					</div>
+				) : currentWeather ? (
+					<div className="flex flex-1 flex-col items-center justify-evenly gap-4">
+						<CurrentWeather weather={currentWeather} />
+
+						{forecastWeather?.length > 0 && (
+							<FiveDayForecast forecast={forecastWeather} />
 						)}
-					</Fragment>
+					</div>
 				) : (
 					<div className="flex flex-1 flex-col items-center justify-center gap-4 py-16">
 						<CloudSun className="size-24 text-white/60" />

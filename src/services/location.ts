@@ -114,7 +114,7 @@ export function useReverseGeocode(
 
 			return data;
 		},
-		enabled: coordinates?.lat !== null && coordinates?.lon !== null,
+		enabled: !!coordinates?.lat && !!coordinates?.lon,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 	});
 }

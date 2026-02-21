@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
-import { CITIES, WEATHER_BY_CITY } from '~/lib/mock-data';
-import type { City } from '~/lib/mock-types';
+
 import { useGetLocation, useReverseGeocode } from '~/services/location';
+import { useGetCurrentWeather, useGetForecast } from '~/services/weather';
 import { formatCityLabel } from '~/utils/city';
 
 export function useWeatherScreenContainer() {
@@ -12,11 +12,19 @@ export function useWeatherScreenContainer() {
 		useGetLocation();
 
 	const { data: reverseGeocode = null, isLoading: isLoadingReverseGeocode } =
-		useReverseGeocode(coordinates);
+		useReverseGeocode(null);
 
-	const weatherData = selectedCity ? WEATHER_BY_CITY[selectedCity.name] : null;
+	const { data: currentWeather = null, isLoading: isLoadingCurrentWeather } =
+		useGetCurrentWeather(coordinates);
 
-	const isLoading = isLoadingCoordinates || isLoadingReverseGeocode;
+	const { data: forecastWeather = [], isLoading: isLoadingForecast } =
+		useGetForecast(coordinates);
+
+	const isLoading =
+		isLoadingCoordinates ||
+		isLoadingReverseGeocode ||
+		isLoadingCurrentWeather ||
+		isLoadingForecast;
 
 	const filteredCities =
 		searchValue.trim().length < 1
@@ -42,6 +50,8 @@ export function useWeatherScreenContainer() {
 		cities: filteredCities,
 		selectedCity,
 		onSelectCity: handleSelectCity,
-		weatherData,
+		isLoading,
+		currentWeather,
+		forecastWeather,
 	};
 }
