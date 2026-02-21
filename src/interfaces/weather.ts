@@ -18,6 +18,7 @@ export interface IWeatherData {
 	main: IWeatherMain;
 	weather: IWeather[];
 	dt: number;
+	sys?: { country?: string };
 }
 
 export interface IWeatherForecastDay {

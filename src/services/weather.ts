@@ -1,5 +1,5 @@
 import { type UseQueryResult, useQuery } from '@tanstack/react-query';
-import { EWeatherQueryKeys } from '~/enums/weather';
+import { EWeatherQueryKeys } from '~/enums/keys';
 import type { ICoordinates } from '~/interfaces/location';
 import type { IWeatherData, IWeatherForecast } from '~/interfaces/weather';
 import { env } from '~/utils/env';

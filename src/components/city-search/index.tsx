@@ -1,4 +1,4 @@
-import { ChevronsUpDown, MapPin } from 'lucide-react';
+import { ChevronsUpDown, Loader2, MapPin } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import {
 	Command,
@@ -13,7 +13,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '~/components/ui/popover';
-import type { City } from '~/lib/mock-types';
+import type { City } from '~/interfaces/location';
 import { formatCityLabel } from '~/utils/city';
 import { cn } from '~/utils/cn';
 import type { CitySearchProps } from './types';
@@ -24,6 +24,7 @@ function CitySearch({
 	cities,
 	selectedCity,
 	onSelectCity,
+	isSearching = false,
 }: CitySearchProps) {
 	const [open, setOpen] = useState(false);
 
@@ -46,12 +47,17 @@ function CitySearch({
 					aria-expanded={open}
 					aria-label="Select city"
 					className={cn(
-						'flex h-9 w-full items-center justify-between gap-2 rounded-md border border-input bg-transparent px-3 py-1 text-left text-base shadow-xs outline-none transition-[color,box-shadow]',
+						'flex h-9 w-full min-w-0 items-center justify-between gap-2 rounded-md border border-input bg-transparent px-3 py-1 text-left text-base shadow-xs outline-none transition-[color,box-shadow]',
 						'hover:bg-accent/50',
 						'focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50',
 					)}
 				>
-					<span className={cn(!displayValue && 'text-muted-foreground')}>
+					<span
+						className={cn(
+							'min-w-0 truncate',
+							!displayValue && 'text-muted-foreground',
+						)}
+					>
 						{displayValue || 'Search by city'}
 					</span>
 
@@ -63,12 +69,19 @@ function CitySearch({
 				className="w-(--radix-popover-trigger-width) p-0"
 				align="start"
 			>
-				<Command
-					shouldFilter={false}
-					value={search}
-					onValueChange={onSearchChange}
-				>
-					<CommandInput placeholder="Search by city..." />
+				<Command shouldFilter={false}>
+					<CommandInput
+						autoFocus
+						placeholder="Search by city..."
+						value={search}
+						onValueChange={onSearchChange}
+					/>
+					{isSearching && (
+						<div className="flex items-center gap-2 px-2 py-1.5 text-muted-foreground text-sm">
+							<Loader2 className="size-4 animate-spin" />
+							Searching...
+						</div>
+					)}
 
 					<CommandList>
 						<CommandEmpty>No city found.</CommandEmpty>

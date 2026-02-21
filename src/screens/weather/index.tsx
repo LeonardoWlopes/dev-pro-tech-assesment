@@ -5,6 +5,7 @@ import { Disclaimer } from '~/components/disclaimer';
 import { FiveDayForecast } from '~/components/five-day-forecast';
 import { Skeleton } from '~/components/ui/skeleton';
 import { DisclaimerVariant } from '~/enums/weather';
+import { getWeatherGradient } from '~/utils/weather-gradient';
 import { useWeatherScreenContainer } from './container';
 
 export function WeatherScreen() {
@@ -16,6 +17,7 @@ export function WeatherScreen() {
 		onSelectCity,
 		currentWeather,
 		isLoading,
+		isSearching,
 		forecastWeather,
 	} = useWeatherScreenContainer();
 
@@ -30,6 +32,7 @@ export function WeatherScreen() {
 					cities={cities}
 					selectedCity={selectedCity}
 					onSelectCity={onSelectCity}
+					isSearching={isSearching}
 				/>
 
 				<div className="mt-auto">
@@ -37,7 +40,10 @@ export function WeatherScreen() {
 				</div>
 			</aside>
 
-			<main className="flex flex-1 flex-col gap-8 bg-linear-to-b from-sky-400 to-blue-600 p-6 lg:p-8">
+			<main
+				className="flex flex-1 flex-col gap-8 p-6 lg:p-8"
+				style={getWeatherGradient(currentWeather?.weather?.[0]?.main)}
+			>
 				<h2 className="font-bold text-2xl text-white">Weather</h2>
 
 				{isLoading ? (
@@ -60,7 +66,10 @@ export function WeatherScreen() {
 					</div>
 				) : currentWeather ? (
 					<div className="flex flex-1 flex-col items-center justify-evenly gap-4">
-						<CurrentWeather weather={currentWeather} />
+						<CurrentWeather
+							weather={currentWeather}
+							displayCity={selectedCity}
+						/>
 
 						{forecastWeather?.length > 0 && (
 							<FiveDayForecast forecast={forecastWeather} />

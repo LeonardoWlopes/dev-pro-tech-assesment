@@ -1,18 +1,31 @@
-import { useCallback, useState } from 'react';
-
-import { useGetLocation, useReverseGeocode } from '~/services/location';
+import { useCallback, useMemo, useState } from 'react';
+import { useDebouncedValue } from '~/hooks/use-debounced-value';
+import type { City } from '~/interfaces/location';
+import { useGetLocation, useSearchByQuery } from '~/services/location';
 import { useGetCurrentWeather, useGetForecast } from '~/services/weather';
 import { formatCityLabel } from '~/utils/city';
+import { geolocationResultToCity } from '~/utils/geolocation';
+
+const SEARCH_DEBOUNCE_MS = 300;
 
 export function useWeatherScreenContainer() {
 	const [searchValue, setSearchValue] = useState('');
 	const [selectedCity, setSelectedCity] = useState<City | null>(null);
 
-	const { data: coordinates = null, isLoading: isLoadingCoordinates } =
+	const debouncedSearch = useDebouncedValue(
+		searchValue.trim(),
+		SEARCH_DEBOUNCE_MS,
+	);
+
+	const { data: locationCoordinates = null, isLoading: isLoadingCoordinates } =
 		useGetLocation();
 
-	const { data: reverseGeocode = null, isLoading: isLoadingReverseGeocode } =
-		useReverseGeocode(null);
+	const { data: searchResults = [], isLoading: isLoadingSearch } =
+		useSearchByQuery(debouncedSearch, 8);
+
+	const coordinates = selectedCity
+		? { lat: selectedCity.lat, lon: selectedCity.lon }
+		: locationCoordinates;
 
 	const { data: currentWeather = null, isLoading: isLoadingCurrentWeather } =
 		useGetCurrentWeather(coordinates);
@@ -21,19 +34,12 @@ export function useWeatherScreenContainer() {
 		useGetForecast(coordinates);
 
 	const isLoading =
-		isLoadingCoordinates ||
-		isLoadingReverseGeocode ||
-		isLoadingCurrentWeather ||
-		isLoadingForecast;
+		isLoadingCoordinates || isLoadingCurrentWeather || isLoadingForecast;
 
-	const filteredCities =
-		searchValue.trim().length < 1
-			? []
-			: CITIES.filter((city) => {
-					const label = formatCityLabel(city).toLowerCase();
-					const query = searchValue.toLowerCase();
-					return label.includes(query);
-				});
+	const cities = useMemo(
+		() => searchResults.map(geolocationResultToCity),
+		[searchResults],
+	);
 
 	function handleSearchChange(value: string) {
 		setSearchValue(value);
@@ -47,10 +53,11 @@ export function useWeatherScreenContainer() {
 	return {
 		searchValue,
 		onSearchChange: handleSearchChange,
-		cities: filteredCities,
+		cities,
 		selectedCity,
 		onSelectCity: handleSelectCity,
 		isLoading,
+		isSearching: isLoadingSearch,
 		currentWeather,
 		forecastWeather,
 	};

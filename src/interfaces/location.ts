@@ -20,3 +20,11 @@ export interface IGeolocationAddress {
 	country?: string;
 	country_code?: string;
 }
+
+export interface City {
+	name: string;
+	state: string | null;
+	country: string;
+	lat: number;
+	lon: number;
+}

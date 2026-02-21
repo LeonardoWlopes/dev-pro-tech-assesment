@@ -1,4 +1,4 @@
-import type { City } from '~/lib/mock-types';
+import type { City } from '~/interfaces/location';
 
 export interface CitySearchProps {
 	search: string;
@@ -6,4 +6,5 @@ export interface CitySearchProps {
 	cities: City[];
 	selectedCity: City | null;
 	onSelectCity: (city: City) => void;
+	isSearching?: boolean;
 }
