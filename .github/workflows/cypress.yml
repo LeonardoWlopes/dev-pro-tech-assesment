@@ -1,0 +1,78 @@
+name: Cypress E2E Tests
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Cypress tests with Allure
+        run: npm run cy:run:allure
+        continue-on-error: true
+
+      - name: Generate Allure Report
+        if: always()
+        run: |
+          npm run allure:generate || true
+
+      - name: Check for screenshots and videos
+        if: always()
+        run: |
+          echo "Checking for screenshots..."
+          ls -la cypress/screenshots/ || echo "No screenshots directory found"
+          echo "Checking for videos..."
+          ls -la cypress/videos/ || echo "No videos directory found"
+
+      - name: Upload Cypress screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Upload Cypress videos
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-results
+          path: allure-results
+          retention-days: 7
+
+      - name: Upload Allure report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-report
+          path: allure-report
+          retention-days: 7

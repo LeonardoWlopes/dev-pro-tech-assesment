@@ -1,0 +1,28 @@
+pre-commit:
+  parallel: true
+  commands:
+    verify-types:
+      run: pnpm tsc
+    lint:
+      glob: "*.{js,jsx,ts,tsx}"
+      run: pnpm exec eslint --fix {staged_files}
+      stage_fixed: true
+    test:
+      run: pnpm test
+pre-push:
+  parallel: true
+  commands:
+    verify-types:
+      run: pnpm tsc
+    lint:
+      glob: "*.{js,jsx,ts,tsx}"
+      run: pnpm exec eslint --fix {staged_files}
+      stage_fixed: true
+    test:
+      run: pnpm test
+    commit-lint:
+      run: pnpm dlx commitlint --from=HEAD~1
+commit-msg:
+  commands:
+    commit-lint:
+      run: pnpm dlx commitlint --edit
