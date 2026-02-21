@@ -5,7 +5,7 @@ pre-commit:
       run: pnpm tsc
     lint:
       glob: "*.{js,jsx,ts,tsx}"
-      run: pnpm exec eslint --fix {staged_files}
+      run: pnpm exec biome check --write --unsafe {staged_files}
       stage_fixed: true
     test:
       run: pnpm test
@@ -16,7 +16,7 @@ pre-push:
       run: pnpm tsc
     lint:
       glob: "*.{js,jsx,ts,tsx}"
-      run: pnpm exec eslint --fix {staged_files}
+      run: pnpm exec biome check --write --unsafe {staged_files}
       stage_fixed: true
     test:
       run: pnpm test

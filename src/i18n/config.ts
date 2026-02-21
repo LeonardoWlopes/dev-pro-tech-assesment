@@ -1,7 +1,7 @@
-import i18n from 'i18next'
-import { initReactI18next } from 'react-i18next'
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
 
-import en from './languages/en.json'
+import en from './languages/en.json';
 
 i18n.use(initReactI18next).init({
 	resources: {
@@ -12,6 +12,6 @@ i18n.use(initReactI18next).init({
 	interpolation: {
 		escapeValue: false,
 	},
-})
+});
 
-export const t = i18n.t.bind(i18n)
+export const t = i18n.t.bind(i18n);

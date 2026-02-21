@@ -15,11 +15,10 @@
 		"gruntfuggly.todo-tree",
 		"redhat.vscode-yaml",
 		"formulahendry.auto-close-tag",
-		"dbaeumer.vscode-eslint",
 		"github.vscode-github-actions",
-		"esbenp.prettier-vscode",
 		"cipchk.cssrem",
 		"bradlc.vscode-tailwindcss",
-		"vitest.explorer"
+		"vitest.explorer",
+		"biomejs.biome"
 	]
 }
