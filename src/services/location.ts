@@ -1,4 +1,5 @@
 import { type UseQueryResult, useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import { EQueryKeys } from '~/enums/location';
 import type { ICoordinates, IGeolocationResult } from '~/interfaces/location';
 import { getBrowserLocation, getLocationFromTimezone } from '~/utils/location';
@@ -6,10 +7,18 @@ import { getBrowserLocation, getLocationFromTimezone } from '~/utils/location';
 const NOMINATIM_BASE = 'https://nominatim.openstreetmap.org';
 const USER_AGENT = 'WeatherForecastApp/1.0 (https://github.com/dev-pro-tech)';
 
+const nominatimClient = axios.create({
+	baseURL: NOMINATIM_BASE,
+	headers: {
+		'User-Agent': USER_AGENT,
+		Accept: 'application/json',
+	},
+});
+
 let lastRequestTime = 0;
 const MIN_REQUEST_INTERVAL_MS = 1100;
 
-async function throttledFetch(url: string): Promise<Response> {
+async function throttledGet<T>(url: string): Promise<T> {
 	const now = Date.now();
 	const elapsed = now - lastRequestTime;
 	if (elapsed < MIN_REQUEST_INTERVAL_MS) {
@@ -17,18 +26,8 @@ async function throttledFetch(url: string): Promise<Response> {
 	}
 	lastRequestTime = Date.now();
 
-	const response = await fetch(url, {
-		headers: {
-			'User-Agent': USER_AGENT,
-			Accept: 'application/json',
-		},
-	});
-
-	if (!response.ok) {
-		throw new Error(`Nominatim API error: ${response.status}`);
-	}
-
-	return response;
+	const { data } = await nominatimClient.get<T>(url);
+	return data;
 }
 
 export function useGetLocation(): UseQueryResult<ICoordinates | null> {
@@ -77,44 +76,9 @@ export function useSearchByQuery(
 				limit: String(limit),
 			});
 
-			const response = await throttledFetch(
-				`${NOMINATIM_BASE}/search?${params}`,
-			);
-			const data = (await response.json()) as IGeolocationResult[];
-
-			return data;
+			return throttledGet<IGeolocationResult[]>(`/search?${params}`);
 		},
 		enabled: query.trim().length >= 2,
 		staleTime: 2 * 60 * 1000, // 2 minutes
-	});
-}
-
-export function useReverseGeocode(
-	coordinates: ICoordinates | null = null,
-): UseQueryResult<IGeolocationResult | null> {
-	return useQuery({
-		queryKey: [
-			EQueryKeys.REVERSE_GEOCODE,
-			coordinates?.lat ?? 0,
-			coordinates?.lon ?? 0,
-		],
-		queryFn: async () => {
-			const params = new URLSearchParams({
-				lat: String(coordinates?.lat),
-				lon: String(coordinates?.lon),
-				format: 'json',
-				addressdetails: '1',
-				zoom: '10',
-			});
-
-			const response = await throttledFetch(
-				`${NOMINATIM_BASE}/reverse?${params}`,
-			);
-			const data = (await response.json()) as IGeolocationResult;
-
-			return data;
-		},
-		enabled: !!coordinates?.lat && !!coordinates?.lon,
-		staleTime: 5 * 60 * 1000, // 5 minutes
 	});
 }
