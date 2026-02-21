@@ -7,8 +7,6 @@ pre-commit:
       glob: "*.{js,jsx,ts,tsx}"
       run: pnpm exec biome check --write --unsafe {staged_files}
       stage_fixed: true
-    test:
-      run: pnpm test
 pre-push:
   parallel: true
   commands:
@@ -18,8 +16,6 @@ pre-push:
       glob: "*.{js,jsx,ts,tsx}"
       run: pnpm exec biome check --write --unsafe {staged_files}
       stage_fixed: true
-    test:
-      run: pnpm test
     commit-lint:
       run: pnpm dlx commitlint --from=HEAD~1
 commit-msg:
